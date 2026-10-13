@@ -1,0 +1,318 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-blood: var(--blood);
+  --color-blood-dark: var(--blood-dark);
+  --color-coal: var(--coal);
+  --color-graphite: var(--graphite);
+  --color-smoke: var(--smoke);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  --blood: #c90000;
+  --blood-dark: #8a0000;
+  --coal: #000000;
+  --graphite: #151515;
+  --graphite-2: #252525;
+  --smoke: #f4f2ee;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #151515;
+  --card-foreground: #ffffff;
+  --popover: #151515;
+  --popover-foreground: #ffffff;
+  --primary: #c90000;
+  --primary-foreground: #ffffff;
+  --secondary: #252525;
+  --secondary-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #9a9a9a;
+  --accent: #c90000;
+  --accent-foreground: #ffffff;
+  --destructive: #c90000;
+  --border: rgba(255, 255, 255, 0.09);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #c90000;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-black text-white;
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ============ TIPOGRAFIA ============ */
+.font-display {
+  font-family: var(--font-display), 'Arial Narrow', sans-serif;
+  letter-spacing: 0.02em;
+}
+.text-stroke {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.35);
+  color: transparent;
+}
+.text-stroke-red {
+  -webkit-text-stroke: 1.5px rgba(201, 0, 0, 0.65);
+  color: transparent;
+}
+
+/* ============ GLOW / NEON ============ */
+.glow-red {
+  box-shadow: 0 0 24px rgba(201, 0, 0, 0.45), 0 0 64px rgba(201, 0, 0, 0.18);
+}
+.glow-red-soft {
+  box-shadow: 0 0 40px rgba(201, 0, 0, 0.22);
+}
+.text-glow-red {
+  text-shadow: 0 0 18px rgba(201, 0, 0, 0.8), 0 0 48px rgba(201, 0, 0, 0.35);
+}
+.hover-glow {
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 28px rgba(201, 0, 0, 0.4);
+}
+
+/* ============ SHIMMER BUTTON (luz passando) ============ */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.btn-shimmer:hover::after {
+  transform: translateX(120%);
+}
+
+/* ============ GLASSMORPHISM ============ */
+.glass {
+  background: rgba(21, 21, 21, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ============ NOISE TEXTURE ============ */
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============ MARQUEE ============ */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+.animate-marquee-fast {
+  animation: marquee 18s linear infinite;
+}
+.marquee-hover:hover .animate-marquee {
+  animation-play-state: paused;
+}
+/* Pausa também ao tocar em telas touch */
+.marquee-touch:active .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* ============ SKELETON SHIMMER (carregamento elegante) ============ */
+@keyframes shimmer-bg {
+  to { background-position: -200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(110deg, #161616 8%, #242424 18%, #161616 33%);
+  background-size: 200% 100%;
+  animation: shimmer-bg 1.7s linear infinite;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============ RESPEITO A REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-fast,
+  .animate-spin-slow,
+  .animate-star-pulse,
+  .animate-floaty,
+  .animate-pulse-red {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .img-zoom {
+    transition: none;
+  }
+}
+
+/* ============ SHIMMER TEXT (gradiente animado) ============ */
+@keyframes shimmer-text {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.text-shimmer {
+  background: linear-gradient(
+    110deg,
+    #ffffff 20%,
+    #ff4b4b 38%,
+    #c90000 50%,
+    #ff4b4b 62%,
+    #ffffff 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-text 5s linear infinite;
+}
+
+/* ============ SPIN LENTO (selo estrela) ============ */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
+@keyframes star-pulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(201, 0, 0, 0.9)) drop-shadow(0 0 18px rgba(201, 0, 0, 0.45)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 14px rgba(255, 60, 60, 1)) drop-shadow(0 0 34px rgba(201, 0, 0, 0.7)); transform: scale(1.12); }
+}
+.animate-star-pulse {
+  animation: star-pulse 2.6s ease-in-out infinite;
+}
+
+/* ============ FLOAT / PULSE ============ */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-floaty {
+  animation: floaty 5s ease-in-out infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 0, 0, 0.5); }
+  50% { box-shadow: 0 0 0 12px rgba(201, 0, 0, 0); }
+}
+.animate-pulse-red {
+  animation: pulse-red 2.2s ease-out infinite;
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 8px;
+  border: 2px solid #0a0a0a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c90000;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============ GRADIENT TEXT ============ */
+.grad-red {
+  background: linear-gradient(120deg, #ff3b3b, #c90000 55%, #6e0000);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============ SEÇÃO CLARA (alternância) ============ */
+.section-light {
+  background: #f4f2ee;
+  color: #0a0a0a;
+}
+.section-light .muted {
+  color: #555;
+}
+
+/* ============ IMAGE ZOOM ============ */
+.img-zoom {
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.group:hover .img-zoom {
+  transform: scale(1.07);
+}
+
+/* ============ REVEAL ============ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

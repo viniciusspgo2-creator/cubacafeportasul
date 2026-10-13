@@ -1,0 +1,120 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  category    String
+  description String   @default("")
+  longDesc    String   @default("")
+  price       Float    @default(0)
+  oldPrice    Float?
+  images      String   @default("[]")
+  tags        String   @default("[]")
+  specs       String   @default("{}")
+  stock       Int      @default(10)
+  featured    Boolean  @default(false)
+  isNew       Boolean  @default(false)
+  views       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([featured])
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  clientName  String
+  clientPhone String
+  items       String   @default("[]")
+  notes       String   @default("")
+  total       Float    @default(0)
+  status      String   @default("novo")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  notes     String   @default("")
+  orders    Int      @default(0)
+  spent     Float    @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Supplier {
+  id        String   @id @default(uuid())
+  name      String
+  contact   String   @default("")
+  products  String   @default("")
+  lastOrder Float    @default(0)
+  createdAt DateTime @default(now())
+}
+
+model FinanceEntry {
+  id          String    @id @default(uuid())
+  type        String // entrada | saida
+  category    String
+  description String
+  amount      Float
+  status      String    @default("pago") // pago | pendente
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model Article {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  content         String
+  cover           String   @default("")
+  tags            String   @default("[]")
+  metaTitle       String   @default("")
+  metaDescription String   @default("")
+  readTime        Int      @default(5)
+  author          String   @default("Equipe Cuba & Café")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+model Setting {
+  key   String @id
+  value String @default("")
+}
+
+model Visit {
+  id        String   @id @default(uuid())
+  path      String   @default("/")
+  action    String   @default("view") // visit | product_view | order_sent | search
+  term      String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Imagens enviadas pelo painel admin (armazenadas no banco — compatível com Vercel/serverless)
+model UploadedImage {
+  id        String   @id @default(uuid())
+  mime      String   @default("image/webp")
+  data      String // base64
+  thumbData String   @default("")
+  createdAt DateTime @default(now())
+}
